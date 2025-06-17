@@ -25,7 +25,6 @@
                     <option value="Cividis">Cividis</option>
                     <option value="Hot">Hot</option>
                     <option value="Picnic">Picnic</option>
-                    <option value="Portland">Portland</option>
                     <option value="Jet">Jet</option>
                     <option value="Bluered">Bluered</option>
                     <option value="Greens">Greens</option>
@@ -42,14 +41,44 @@
             </div>
             <div class="dashboard-row">
                 <label><input type="checkbox" id="show-colorbar" checked> Show Colorbar</label>
+                <label for="colorbar-position">Colorbar Position:</label>
+                <select id="colorbar-position">
+                    <option value="right">Right</option>
+                    <option value="left">Left</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                </select>
+                <label for="colorbar-title">Title:</label>
+                <input type="text" id="colorbar-title" value="Value" style="width:80px;">
             </div>
             <div class="dashboard-row">
                 <label for="title-input">Heatmap Title:</label>
                 <input type="text" id="title-input" value="Heatmap" style="width:200px;">
+                <button id="reset-settings-btn">Reset Settings</button>
             </div>
             <div class="dashboard-row">
                 <label for="font-size">Axis Label Font Size:</label>
                 <input type="number" id="font-size" min="8" max="32" value="12" style="width:60px;">
+                <label><input type="checkbox" id="show-grid" checked> Show Grid Lines</label>
+                <button id="transpose-btn">Transpose Data</button>
+            </div>
+            <div class="dashboard-row">
+                <label for="decimals">Cell Value Decimals:</label>
+                <input type="number" id="decimals" min="0" max="6" value="2" style="width:50px;">
+                <label><input type="checkbox" id="show-cell-values"> Show Cell Values</label>
+            </div>
+            <div class="dashboard-row">
+                <button id="download-png-btn">Download PNG</button>
+                <button id="download-svg-btn">Download SVG</button>
+                <button id="download-annotations-btn">Export Annotations</button>
+                <input type="file" id="upload-annotations-input" style="display:none;">
+                <button id="upload-annotations-btn">Import Annotations</button>
+                <button id="clear-annotations-btn">Clear Annotations</button>
+                <label for="theme-switch">Theme:</label>
+                <select id="theme-switch">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
             </div>
         </div>
 
