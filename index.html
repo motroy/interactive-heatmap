@@ -15,9 +15,48 @@
             <p>Click or drag-and-drop a CSV/TSV file here</p>
             <input type="file" id="file-input" accept=".csv,.tsv,text/csv,text/tab-separated-values">
         </div>
+        <div id="controls">
+            <button id="add-annotation-btn" type="button">Add Annotation</button>
+            <label><input type="checkbox" id="toggle-xlabels" checked> Show X axis labels</label>
+            <label><input type="checkbox" id="toggle-ylabels" checked> Show Y axis labels</label>
+        </div>
         <div id="error-message"></div>
         <div id="heatmap"></div>
     </div>
+
+    <!-- Annotation Modal -->
+    <div id="annotation-modal" class="modal">
+        <div class="modal-content">
+            <h2>Add Annotation</h2>
+            <form id="annotation-form">
+                <div>
+                    <label>
+                        Row (Y):
+                        <input type="number" id="annot-row" min="0" placeholder="Row index" required>
+                        <span id="annot-ylabel"></span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Column (X):
+                        <input type="number" id="annot-col" min="0" placeholder="Column index" required>
+                        <span id="annot-xlabel"></span>
+                    </label>
+                </div>
+                <div>
+                    <label>
+                        Annotation Text:
+                        <input type="text" id="annot-text" required>
+                    </label>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit">Add</button>
+                    <button id="annotation-cancel-btn" type="button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
