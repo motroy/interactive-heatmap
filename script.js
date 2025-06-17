@@ -1,5 +1,3 @@
-// --- (Same parsing and file handling as before, but state is extended) ---
-
 const defaultHeatmapState = {
     rowLabels: [],
     colLabels: [],
@@ -11,8 +9,14 @@ const defaultHeatmapState = {
     reverseScale: false,
     opacity: 1,
     showColorbar: true,
+    colorbarPosition: 'right',
+    colorbarTitle: 'Value',
     title: 'Heatmap',
-    fontSize: 12
+    fontSize: 12,
+    showGrid: true,
+    theme: 'light',
+    showCellValues: false,
+    decimals: 2
 };
 let currentHeatmap = {...defaultHeatmapState};
 
@@ -49,20 +53,37 @@ function clearError() {
     document.getElementById('error-message').textContent = '';
 }
 
-function getColorscale(name, reverse) {
-    let c = name;
-    if (reverse) return c + '_r';
-    return c;
-}
-
 function plotHeatmap(state) {
     const {
         rowLabels, colLabels, data, annotations,
         showXLabels, showYLabels,
         colorscale, reverseScale,
         opacity, showColorbar,
-        title, fontSize
+        colorbarPosition, colorbarTitle,
+        title, fontSize, showGrid,
+        theme, showCellValues, decimals
     } = state;
+
+    // Prepare annotations for cell text if requested
+    let zText = undefined;
+    if (showCellValues) {
+        zText = data.map(row => row.map(
+            v => v == null ? '' : v.toFixed(decimals)
+        ));
+    }
+
+    // Colorbar positioning
+    let colorbar = { title: colorbarTitle, visible: showColorbar };
+    switch (colorbarPosition) {
+        case 'left': colorbar.x = 0; colorbar.y = 0.5; colorbar.xanchor = 'left'; colorbar.orientation = 'v'; break;
+        case 'right': colorbar.x = 1; colorbar.y = 0.5; colorbar.xanchor = 'right'; colorbar.orientation = 'v'; break;
+        case 'top': colorbar.x = 0.5; colorbar.y = 1; colorbar.xanchor = 'center'; colorbar.orientation = 'h'; break;
+        case 'bottom': colorbar.x = 0.5; colorbar.y = 0; colorbar.xanchor = 'center'; colorbar.orientation = 'h'; break;
+    }
+
+    // Theme
+    const dark = theme === 'dark';
+    document.body.classList.toggle('dark', dark);
 
     const layout = {
         title: title,
@@ -72,7 +93,9 @@ function plotHeatmap(state) {
             ticktext: showXLabels ? colLabels : [],
             showticklabels: showXLabels,
             automargin: true,
-            tickfont: {size: fontSize}
+            tickfont: { size: fontSize, color: dark ? '#eee' : '#222' },
+            showgrid: showGrid,
+            gridcolor: dark ? "#444" : "#ddd"
         },
         yaxis: {
             title: '',
@@ -80,21 +103,35 @@ function plotHeatmap(state) {
             ticktext: showYLabels ? rowLabels : [],
             showticklabels: showYLabels,
             automargin: true,
-            tickfont: {size: fontSize}
+            tickfont: { size: fontSize, color: dark ? '#eee' : '#222' },
+            showgrid: showGrid,
+            gridcolor: dark ? "#444" : "#ddd"
         },
         margin: { t: 40, l: 100, r: 30, b: 80 },
-        annotations: annotations || []
+        annotations: annotations || [],
+        plot_bgcolor: dark ? "#23272e" : "#fff",
+        paper_bgcolor: dark ? "#23272e" : "#fff",
+        font: { color: dark ? "#eee" : "#222" }
     };
-    Plotly.newPlot('heatmap', [{
+    let trace = {
         z: data,
         x: colLabels,
         y: rowLabels,
         type: 'heatmap',
         colorscale: colorscale,
         reversescale: reverseScale,
-        colorbar: { title: 'Value', visible: showColorbar },
-        opacity: opacity
-    }], layout, {responsive: true});
+        colorbar: colorbar,
+        opacity: opacity,
+        zsmooth: false,
+        showscale: showColorbar,
+        hoverongaps: false
+    };
+    if (showCellValues) {
+        trace.text = zText;
+        trace.texttemplate = "%{text}";
+        trace.textfont = { color: dark ? "#fff" : "#000", size: fontSize };
+    }
+    Plotly.newPlot('heatmap', [trace], layout, {responsive: true});
 }
 
 // File handling
@@ -131,14 +168,7 @@ function handleFile(file) {
                 title: document.getElementById('title-input').value
             });
             // Reset dashboard controls to default
-            document.getElementById('color-scale').value = 'Viridis';
-            document.getElementById('reverse-colorscale').checked = false;
-            document.getElementById('opacity').value = 1;
-            document.getElementById('opacity-value').textContent = '1';
-            document.getElementById('show-colorbar').checked = true;
-            document.getElementById('toggle-xlabels').checked = true;
-            document.getElementById('toggle-ylabels').checked = true;
-            document.getElementById('font-size').value = 12;
+            resetDashboardControls();
             plotHeatmap(currentHeatmap);
         } catch (err) {
             showError("Error: " + err.message);
@@ -147,6 +177,24 @@ function handleFile(file) {
     };
     reader.onerror = function() { showError("Failed to read file."); };
     reader.readAsText(file);
+}
+
+function resetDashboardControls() {
+    document.getElementById('color-scale').value = 'Viridis';
+    document.getElementById('reverse-colorscale').checked = false;
+    document.getElementById('opacity').value = 1;
+    document.getElementById('opacity-value').textContent = '1';
+    document.getElementById('show-colorbar').checked = true;
+    document.getElementById('colorbar-position').value = 'right';
+    document.getElementById('colorbar-title').value = 'Value';
+    document.getElementById('title-input').value = 'Heatmap';
+    document.getElementById('toggle-xlabels').checked = true;
+    document.getElementById('toggle-ylabels').checked = true;
+    document.getElementById('font-size').value = 12;
+    document.getElementById('show-grid').checked = true;
+    document.getElementById('theme-switch').value = 'light';
+    document.getElementById('show-cell-values').checked = false;
+    document.getElementById('decimals').value = 2;
 }
 
 // Dashboard controls
@@ -168,12 +216,41 @@ document.getElementById('show-colorbar').addEventListener('change', function() {
     currentHeatmap.showColorbar = this.checked;
     plotHeatmap(currentHeatmap);
 });
+document.getElementById('colorbar-position').addEventListener('change', function() {
+    currentHeatmap.colorbarPosition = this.value;
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('colorbar-title').addEventListener('input', function() {
+    currentHeatmap.colorbarTitle = this.value;
+    plotHeatmap(currentHeatmap);
+});
 document.getElementById('title-input').addEventListener('input', function() {
     currentHeatmap.title = this.value;
     plotHeatmap(currentHeatmap);
 });
 document.getElementById('font-size').addEventListener('change', function() {
     currentHeatmap.fontSize = parseInt(this.value, 10) || 12;
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('show-grid').addEventListener('change', function() {
+    currentHeatmap.showGrid = this.checked;
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('theme-switch').addEventListener('change', function() {
+    currentHeatmap.theme = this.value;
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('show-cell-values').addEventListener('change', function() {
+    currentHeatmap.showCellValues = this.checked;
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('decimals').addEventListener('change', function() {
+    currentHeatmap.decimals = parseInt(this.value, 10) || 2;
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('reset-settings-btn').addEventListener('click', function() {
+    Object.assign(currentHeatmap, defaultHeatmapState);
+    resetDashboardControls();
     plotHeatmap(currentHeatmap);
 });
 
@@ -237,4 +314,58 @@ document.getElementById('heatmap').on('plotly_click', function(data) {
     const rowIdx = pt.pointNumber[1];
     const colIdx = pt.pointNumber[0];
     openAnnotationModal(rowIdx, colIdx, currentHeatmap.colLabels[colIdx], currentHeatmap.rowLabels[rowIdx]);
+});
+
+// Annotation management
+document.getElementById('clear-annotations-btn').addEventListener('click', function() {
+    currentHeatmap.annotations = [];
+    plotHeatmap(currentHeatmap);
+});
+document.getElementById('download-annotations-btn').addEventListener('click', function() {
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentHeatmap.annotations, null, 2));
+    const a = document.createElement('a');
+    a.href = dataStr;
+    a.download = "annotations.json";
+    a.click();
+});
+document.getElementById('upload-annotations-btn').addEventListener('click', function() {
+    document.getElementById('upload-annotations-input').click();
+});
+document.getElementById('upload-annotations-input').addEventListener('change', function(e) {
+    const file = e.target.files && e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+        try {
+            const anns = JSON.parse(evt.target.result);
+            if (Array.isArray(anns)) {
+                currentHeatmap.annotations = anns;
+                plotHeatmap(currentHeatmap);
+            } else {
+                alert("Invalid annotations file.");
+            }
+        } catch {
+            alert("Invalid JSON format.");
+        }
+    };
+    reader.readAsText(file);
+});
+
+// Download as image
+document.getElementById('download-png-btn').addEventListener('click', function() {
+    Plotly.downloadImage('heatmap', {format: 'png', filename: 'heatmap'});
+});
+document.getElementById('download-svg-btn').addEventListener('click', function() {
+    Plotly.downloadImage('heatmap', {format: 'svg', filename: 'heatmap'});
+});
+
+// Transpose data
+document.getElementById('transpose-btn').addEventListener('click', function() {
+    // Swap data matrix rows and columns
+    const newData = currentHeatmap.data[0].map((_, c) => currentHeatmap.data.map(r => r[c]));
+    const temp = currentHeatmap.rowLabels;
+    currentHeatmap.rowLabels = currentHeatmap.colLabels;
+    currentHeatmap.colLabels = temp;
+    currentHeatmap.data = newData;
+    plotHeatmap(currentHeatmap);
 });
