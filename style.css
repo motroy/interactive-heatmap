@@ -143,6 +143,27 @@ h1 {
     cursor: pointer;
     font-weight: 500;
 }
+
+/* Dashboard and dark mode enhancements */
+body.dark {
+    background: #23272e;
+    color: #eee;
+}
+body.dark .container {
+    background: #23272e;
+    color: #eee;
+}
+body.dark #dashboard {
+    background: #2c3440;
+    color: #eee;
+}
+body.dark input,
+body.dark select,
+body.dark button {
+    background: #23272e;
+    color: #eee;
+    border-color: #4a4a4a;
+}
 #dashboard {
     background: #f2f5ff;
     border-radius: 6px;
