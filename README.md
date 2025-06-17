@@ -40,7 +40,7 @@ Or [download as ZIP](https://github.com/motroy/interactive-heatmap/archive/refs/
 ### 2. Run
 
 - **Open `index.html` in your browser.**
-  - Or deploy on [GitHub Pages](https://motroy.github.io/motroy/interactive-heatmap) for web access.
+  - Or deploy on [GitHub Pages](https://motroy.github.io/interactive-heatmap) for web access.
 
 ---
 
