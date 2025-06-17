@@ -1,38 +1,119 @@
 # Interactive Heatmap Web App
 
-This is a lightweight, client-side web app that allows users to upload CSV or TSV files and visualize the data as an interactive heatmap. The app is built with HTML, JavaScript, and [Plotly.js](https://plotly.com/javascript/) for interactive charting.
+A fully client-side, interactive heatmap visualizer.  
+- **Upload** your CSV/TSV matrix.
+- **Customize** visualization with the feature-rich dashboard.
+- **Annotate** cells with metadata.
+- **Export** high-quality images and annotations.
+- **No data leaves your browser!**
 
-## Features
+<br/>
 
-- Upload `.csv` or `.tsv` files with tabular data.
-- Automatically parses the file and displays the data as an interactive heatmap.
-- Supports drag-and-drop or file input selection.
-- Works 100% client-side—no backend or data sent to a server.
-- Deployable with GitHub Pages.
+## 🚀 Features
 
-## How to Use
+- **Drag-and-drop CSV/TSV upload**
+- **Dashboard**: 
+  - Color scale, opacity, colorbar options, grid, axis labels, font size, theme (light/dark), & more
+- **Annotations**: 
+  - Add/edit cell annotations
+  - Export/import annotation JSON
+  - One-click clear
+- **Transpose** matrix with a button
+- **Show/hide cell values** with decimal precision control
+- **Download** heatmap as PNG or SVG
+- **Responsive design** for desktops and tablets
 
-1. Open the app in your browser (see [GitHub Pages deployment](#deploy-to-github-pages)).
-2. Click the upload area or drag and drop a `.csv` or `.tsv` file.
-3. The heatmap is generated automatically from the uploaded data.
+<br/>
 
-## File Format
+## 🖥️ Getting Started
 
-Your input file should be a simple CSV or TSV file with headers. The first row is used as column labels, and the first column as row labels. Example:
+### 1. Clone or Download
 
-```csv
-,Col1,Col2,Col3
-Row1,1,2,3
-Row2,4,5,6
-Row3,7,8,9
+```sh
+git clone https://github.com/motroy/interactive-heatmap.git
+cd interactive-heatmap
+```
+Or [download as ZIP](https://github.com/motroy/interactive-heatmap/archive/refs/heads/main.zip) and unzip.
+
+---
+
+### 2. Run
+
+- **Open `index.html` in your browser.**
+  - Or deploy on [GitHub Pages](https://motroy.github.io/motroy/interactive-heatmap) for web access.
+
+---
+
+### 3. Using the App
+
+**a. Upload Data**
+
+- Click the upload area or drag your CSV/TSV file in.
+- File format example:
+    ```
+    ,Col1,Col2,Col3
+    Row1,1,2,3
+    Row2,4,5,6
+    Row3,7,8,9
+    ```
+
+**b. Customize the Heatmap**
+
+- Use the **dashboard** to change:
+    - Color scale & reverse
+    - Opacity
+    - Colorbar position/title/visibility
+    - Font size, grid lines, theme
+    - Show/hide axis labels
+    - Transpose data
+    - Cell values display & decimals
+    - Reset all settings
+
+**c. Annotate**
+
+- Click `Add Annotation` or any cell to annotate.
+- Add as many annotations as you like.
+- **Export/Import** annotations as JSON.
+- **Clear** all annotations.
+
+**d. Download**
+
+- Export the current heatmap as **PNG** or **SVG**.
+
+---
+
+## 📊 Example CSV
+
+```
+,Apple,Banana,Cherry
+A,1,2,3
+B,4,5,6
+C,7,8,9
 ```
 
-## Deploy to GitHub Pages
+---
 
-1. Fork or clone this repository.
-2. Push to a branch named `gh-pages` or enable GitHub Pages in repository settings.
-3. Visit [gh-site](https://motroy.github.io/interactive-heatmap/) to use the app.
+## 🛡️ Privacy
 
-## Customization
+- All processing is in your browser. **No data is uploaded or stored externally.**
 
-You can style and extend the web app by editing `index.html` and `style.css`.
+---
+
+## 🛠️ Tech
+
+- [Plotly.js](https://plotly.com/javascript/) for visualization
+- Vanilla JS, HTML, CSS
+- No dependencies, no build step
+
+---
+
+## 📄 License
+
+MIT
+
+---
+
+## ✨ Credits & Contributions
+
+- Created by [motroy](https://github.com/motroy)
+- Contributions welcome! Open an issue or PR.
