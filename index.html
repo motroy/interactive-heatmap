@@ -15,6 +15,44 @@
             <p>Click or drag-and-drop a CSV/TSV file here</p>
             <input type="file" id="file-input" accept=".csv,.tsv,text/csv,text/tab-separated-values">
         </div>
+        
+        <div id="dashboard">
+            <h2>Dashboard</h2>
+            <div class="dashboard-row">
+                <label for="color-scale">Color Scale:</label>
+                <select id="color-scale">
+                    <option value="Viridis">Viridis</option>
+                    <option value="Cividis">Cividis</option>
+                    <option value="Hot">Hot</option>
+                    <option value="Picnic">Picnic</option>
+                    <option value="Portland">Portland</option>
+                    <option value="Jet">Jet</option>
+                    <option value="Bluered">Bluered</option>
+                    <option value="Greens">Greens</option>
+                    <option value="YlGnBu">YlGnBu</option>
+                    <option value="RdBu">RdBu</option>
+                    <option value="Electric">Electric</option>
+                </select>
+                <label><input type="checkbox" id="reverse-colorscale"> Reverse</label>
+            </div>
+            <div class="dashboard-row">
+                <label for="opacity">Opacity:</label>
+                <input type="range" id="opacity" min="0.1" max="1" step="0.05" value="1">
+                <span id="opacity-value">1</span>
+            </div>
+            <div class="dashboard-row">
+                <label><input type="checkbox" id="show-colorbar" checked> Show Colorbar</label>
+            </div>
+            <div class="dashboard-row">
+                <label for="title-input">Heatmap Title:</label>
+                <input type="text" id="title-input" value="Heatmap" style="width:200px;">
+            </div>
+            <div class="dashboard-row">
+                <label for="font-size">Axis Label Font Size:</label>
+                <input type="number" id="font-size" min="8" max="32" value="12" style="width:60px;">
+            </div>
+        </div>
+
         <div id="controls">
             <button id="add-annotation-btn" type="button">Add Annotation</button>
             <label><input type="checkbox" id="toggle-xlabels" checked> Show X axis labels</label>
