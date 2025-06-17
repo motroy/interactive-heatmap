@@ -1,27 +1,3 @@
-#dashboard {
-    background: #f2f5ff;
-    border-radius: 6px;
-    padding: 18px 16px 8px 16px;
-    margin-bottom: 18px;
-    box-shadow: 0 1px 6px rgba(49,49,110,0.07);
-}
-#dashboard h2 {
-    margin-top: 0;
-    font-size: 1.1em;
-    color: #31316e;
-    margin-bottom: 10px;
-}
-.dashboard-row {
-    display: flex;
-    gap: 12px;
-    align-items: center;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
-#dashboard label {
-    margin-bottom: 0;
-    font-size: 1em;
-}
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
     background: #f4f4f4;
@@ -166,4 +142,28 @@ h1 {
     padding: 4px 16px;
     cursor: pointer;
     font-weight: 500;
+}
+#dashboard {
+    background: #f2f5ff;
+    border-radius: 6px;
+    padding: 18px 16px 8px 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 1px 6px rgba(49,49,110,0.07);
+}
+#dashboard h2 {
+    margin-top: 0;
+    font-size: 1.1em;
+    color: #31316e;
+    margin-bottom: 10px;
+}
+.dashboard-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+}
+#dashboard label {
+    margin-bottom: 0;
+    font-size: 1em;
 }
