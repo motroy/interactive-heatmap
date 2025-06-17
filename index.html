@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Heatmap Web App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <!-- Plotly.js CDN -->
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Interactive Heatmap Web App</h1>
+        <div id="upload-area" tabindex="0">
+            <p>Click or drag-and-drop a CSV/TSV file here</p>
+            <input type="file" id="file-input" accept=".csv,.tsv,text/csv,text/tab-separated-values">
+        </div>
+        <div id="error-message"></div>
+        <div id="heatmap"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
