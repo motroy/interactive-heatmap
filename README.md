@@ -31,7 +31,7 @@ Row3,7,8,9
 
 1. Fork or clone this repository.
 2. Push to a branch named `gh-pages` or enable GitHub Pages in repository settings.
-3. Visit `https://<your-username>.github.io/<repo-name>/` to use the app.
+3. Visit `https://motroy.github.io/interactive-heatmap/` to use the app.
 
 ## Customization
 
